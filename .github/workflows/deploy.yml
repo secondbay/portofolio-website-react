@@ -15,7 +15,7 @@ jobs:
            with:
              host: ${{ secrets.VPS_HOST }}
              username: ${{ secrets.VPS_USER }}
-             key: ${{ secrets.SSH_KEY }}
+             key: ${{ secrets.PRIVATE_KEY_VPS }}
              script: |
                cd /var/www/portofolio-website-react
                git pull origin main
