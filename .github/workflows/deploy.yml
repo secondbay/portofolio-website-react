@@ -1,0 +1,24 @@
+name: Auto-Deploy to VPS
+
+on:
+  push:
+     branches:
+        - main
+
+jobs:
+   deploy:
+      runs-on: ubuntu-latest
+
+      steps:
+         - name: Deploy ke VPS via SSH
+           uses: appleboy/ssh-action@1.0.0
+           with:
+             host: ${{ secrets.VPS_HOST }}
+             username: ${{ secrets.VPS_USER }}
+             key: ${{ secrets.SSH_KEY }}
+             scripts: |
+               cd /var/www/portofolio-website-react
+               git pull origin main
+               npm install
+               npm run build
+               systemctl restart nginx
