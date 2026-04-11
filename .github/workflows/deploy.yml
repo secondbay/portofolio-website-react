@@ -10,12 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Decode SSH
+        run: |
+          echo "${{ secrets.PRIVATE_SSH_KEY }}" | base64 -d > key.pem
+          chmod 600 key.pem
+
       - name: Deploy ke VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          key_path: key.pem
           script: |
             cd /var/www/portofolio-website-react
             git pull origin main
