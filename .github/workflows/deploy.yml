@@ -23,6 +23,10 @@ jobs:
           key_path: key.pem
           script: |
             cd /var/www/portofolio-website-react
+
+            echo "Reset local changes.."
+            git reset --hard
+
             echo "Pull the latest code..."
             git pull origin main
 
