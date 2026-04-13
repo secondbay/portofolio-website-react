@@ -1,6 +1,5 @@
 # 🌐 Portfolio Website
 
-![CI/CD](https://img.shields.io/badge/CI-CD-active-brightgreen)
 
 ## 📌 Description
 
