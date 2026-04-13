@@ -30,13 +30,15 @@ jobs:
             echo "Pull the latest code..."
             git pull origin main
 
-            echo "Install depedencies..."
-            npm ci
 
-            echo "Build project..."
-            npm run build
+            echo "Stop dan delete old container.."
+            docker stop portofolio || true
+            docker rm portofolio || true
 
-            echo "Reload nginx..."
-            systemctl reload nginx
+            echo "Build new Image.."
+            docker build -t portofolio-react .
+
+            echo "Running container.."
+            docker run -d -p 3000:80 --name portofolio portofolio-react
 
             echo "Deploy selesai!"
