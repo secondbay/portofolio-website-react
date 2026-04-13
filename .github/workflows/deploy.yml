@@ -23,7 +23,16 @@ jobs:
           key_path: key.pem
           script: |
             cd /var/www/portofolio-website-react
+            echo "Pull the latest code..."
             git pull origin main
-            npm install
+
+            echo "Install depedencies..."
+            npm ci
+
+            echo "Build project..."
             npm run build
-            systemctl restart nginx
+
+            echo "Reload nginx..."
+            systemctl reload nginx
+
+            echo "Deploy selesai!"
