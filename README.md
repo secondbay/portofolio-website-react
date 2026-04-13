@@ -1,12 +1,10 @@
 # 🌐 Portfolio Website
 
-
 ## 📌 Description
 
-This is a personal portfolio website built using React.
-It showcases my profile, skills, projects, and work experience in a clean and modern interface.
+This is a personal portfolio website built using React. It showcases my profile, skills, projects, and work experience in a clean and modern interface.
 
-This project also demonstrates my understanding of **CI/CD automation and VPS deployment** using GitHub Actions.
+This project also demonstrates my understanding of modern DevOps practices, including **CI/CD automation, Docker containerization, and VPS deployment using GitHub Actions**.
 
 ---
 
@@ -15,8 +13,10 @@ This project also demonstrates my understanding of **CI/CD automation and VPS de
 * React
 * JavaScript
 * HTML & CSS
-* Nginx (production web server)
-* CI/CD with GitHub Actions
+* Nginx (Production Web Server)
+* Docker (Multi-stage build)
+* GitHub Actions (CI/CD)
+* VPS (Deployment Server)
 
 ---
 
@@ -34,26 +34,48 @@ This project also demonstrates my understanding of **CI/CD automation and VPS de
 
 ### 1. Clone the repository
 
-```bash id="fy6kt3"
+```bash
 git clone https://github.com/secondbay/portofolio-website-react.git
 cd portofolio-website-react
 ```
 
 ### 2. Install dependencies
 
-```bash id="r4m3b3"
+```bash
 npm install
 ```
 
 ### 3. Run the app
 
-```bash id="2lvtv6"
+```bash
 npm start
 ```
 
 App will run on:
 
-```id="nqqsl3"
+```
+http://localhost:3000
+```
+
+---
+
+## 🐳 Run with Docker (Recommended)
+
+### Build Docker Image
+
+```bash
+docker build -t portofolio-react .
+```
+
+### Run Container
+
+```bash
+docker run -d -p 3000:80 --name portofolio portofolio-react
+```
+
+Access the app:
+
+```
 http://localhost:3000
 ```
 
@@ -61,53 +83,58 @@ http://localhost:3000
 
 ## 🔄 CI/CD Pipeline
 
-This project uses **GitHub Actions** for automated deployment.
+This project uses GitHub Actions for automated deployment with a modern DevOps workflow.
 
 ### 🚀 Workflow:
 
 1. Code is pushed to the `main` branch
-2. GitHub Actions pipeline is triggered
-3. Connects to VPS via SSH
-4. Pulls latest code from repository
-5. Installs dependencies and builds the project
-6. Reloads Nginx to serve the updated build
+2. GitHub Actions builds Docker image
+3. Image is exported to `.tar` file
+4. File is securely transferred to VPS via SSH
+5. VPS loads Docker image
+6. Container is automatically deployed
 
-### ⚙️ Deployment Details:
+---
+
+## ⚙️ Deployment Details
 
 * Automated deployment on every push to `main`
-* Uses SSH authentication with encrypted secrets
-* Ensures the production server is always in sync with the repository
-
-### 📊 Status:
-
-✅ CI/CD pipeline is active and successfully deploying updates
+* Docker-based deployment (no build on VPS)
+* Uses SSH authentication with GitHub Secrets
+* Lightweight VPS execution (run container only)
 
 ---
 
-## 🌐 Deployment
+## 📊 Status
 
-The application is deployed on a VPS and served using Nginx.
+✅ CI/CD pipeline active
+✅ Dockerized deployment
+✅ Successfully deployed to VPS
 
 ---
 
-## 🐳 Docker (Planned)
+## 🌐 Live Deployment
 
-This project will be containerized using Docker with a multi-stage build approach (React build + Nginx for production).
+The application is deployed on a VPS and served using Nginx inside a Docker container.
+
+```
+http://YOUR-VPS-IP:3000
+```
 
 ---
 
 ## 📁 Project Structure
 
-```id="0t3n6v"
+```
 project/
 ├── build/
-├── node_modules/
-├── public
-├── src
-LICENSE
-README.md
-package-lock.json
-package.json
+├── public/
+├── src/
+├── Dockerfile
+├── nginx.conf
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
 ---
@@ -123,10 +150,3 @@ package.json
 **Ibnu Bayhaqi**
 
 ---
-
-## 🚀 Future Improvements
-
-* Add Docker support (multi-stage build)
-* Implement zero-downtime deployment
-* Optimize CI/CD pipeline
-* Improve UI/UX design
