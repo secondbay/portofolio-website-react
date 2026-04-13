@@ -6,39 +6,46 @@ on:
     - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Decode SSH
-        run: |
-          echo "${{ secrets.PRIVATE_SSH_KEY }}" | base64 -d > key.pem
-          chmod 600 key.pem
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Deploy ke VPS
+      - name: Build docker image
+        run: docker build -t portofolio-react .
+
+      - name: Save image ke tar
+        run: docker save portofolio-react > portofolio.tar
+
+      - name: Upload ke VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          source: "portofolio.tar"
+          target: "/var/www/"
+
+
+      - name: Deploy di VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: key.pem
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
-            cd /var/www/portofolio-website-react
+            cd /var/www
 
-            echo "Reset local changes.."
-            git reset --hard
-
-            echo "Pull the latest code..."
-            git pull origin main
-
-            echo "Stop dan delete old container.."
+            echo "Stop dan hapus container lama..."
             docker stop portofolio || true
             docker rm portofolio || true
 
-            echo "Build new Image.."
-            docker build -t portofolio-react .
+            echo "Load image baru..."
+            docker load < portofolio.tar
 
-            echo "Running container.."
+            echo "Run container baru..."
             docker run -d -p 3000:80 --name portofolio portofolio-react
 
-            echo "Deploy selesai!"
-
+            echo "Deploy selesai"
