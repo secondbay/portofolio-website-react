@@ -30,7 +30,6 @@ jobs:
             echo "Pull the latest code..."
             git pull origin main
 
-
             echo "Stop dan delete old container.."
             docker stop portofolio || true
             docker rm portofolio || true
@@ -42,3 +41,4 @@ jobs:
             docker run -d -p 3000:80 --name portofolio portofolio-react
 
             echo "Deploy selesai!"
+
